@@ -1,32 +1,93 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+    <div id="app">
+        <a-layout id="components-layout-demo-responsive">
+            <a-layout-sider
+                    breakpoint="lg"
+                    collapsed-width="0"
+            >
+                <div class="logo"/>
+                <a-menu theme="dark" mode="inline">
+                    <a-menu-item @click="navigateTo('Catalog')">
+                        <a-icon type="user"/>
+                        <span class="nav-text">Каталог</span>
+                    </a-menu-item>
+                </a-menu>
+            </a-layout-sider>
+            <a-layout>
+                <a-layout-header :style="{ background: '#fff', padding: 0 }">
+                    <div class="header__inner">
+                        <a-badge :count="$store.getters.cartTotalQuantity">
+                            <div>
+                                <a-icon
+                                        type="shopping-cart"
+                                        :style="{ fontSize: '28px' }"
+                                        @click="navigateTo('Cart')"
+                                />
+                            </div>
+                        </a-badge>
+                    </div>
+                </a-layout-header>
+                <a-layout-content :style="{ margin: '24px 16px 0' }">
+                    <div :style="{ padding: '24px', background: '#fff', minHeight: '360px' }">
+                        <router-view/>
+                    </div>
+                </a-layout-content>
+
+            </a-layout>
+        </a-layout>
     </div>
-    <router-view/>
-  </div>
 </template>
 
+<script lang="ts">
+    import Component from "vue-class-component";
+    import Vue from 'vue'
+
+    @Component
+    export default class App extends Vue {
+
+        cart: Array<{ id: number, quantity: number }> = [
+            {"id": 0.24208938337318142, "quantity": 1},
+            {"id": 0.7595107171067716, "quantity": 1},
+            {"id": 0.6128784881207103, "quantity": 3},
+            {"id": 0.04407099902666056, "quantity": 2}
+        ]
+
+        navigateTo(routeName: string): void {
+            this.$router.push({
+                name: routeName
+            })
+        }
+    }
+</script>
+
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+    .header__inner {
+        width: 100%;
+        margin-top: 15px;
+        padding: 0px 30px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+    }
 
-#nav {
-  padding: 30px;
-}
+    body, html {
+        height: 100%;
+    }
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
+    #app, .ant-layout {
+        height: 100vh;
+    }
 
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
+    /*#nav {*/
+    /*    padding: 30px;*/
+    /*}*/
+
+    /*#nav a {*/
+    /*    font-weight: bold;*/
+    /*    color: #2c3e50;*/
+    /*}*/
+
+    /*#nav a.router-link-exact-active {*/
+    /*    color: #42b983;*/
+    /*}*/
 </style>
